@@ -4,6 +4,8 @@
 <form method="POST">
     {% csrf_token %}
     <input type="text" name="name" placeholder="Trainee Name">
+    <input type="number" name="age" placeholder="Trainee Age">
+    <input type="email" name="email" placeholder="Trainee Email">
     <button type="submit">Add</button>
 </form>
 {% endblock %}

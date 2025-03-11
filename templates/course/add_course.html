@@ -4,6 +4,7 @@
 <form method="POST">
     {% csrf_token %}
     <input type="text" name="name" placeholder="Course Name">
+    <textarea name="description" placeholder="Course Description"></textarea>
     <button type="submit">Add</button>
 </form>
 {% endblock %}

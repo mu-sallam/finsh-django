@@ -1,30 +1,30 @@
-from django.shortcuts import render, redirect
-
-# Simulated in-memory database for courses
-courses = []
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Course
 
 def course_list(request):
+    courses = Course.objects.all()
     return render(request, 'course/course_list.html', {'courses': courses})
 
 def add_course(request):
     if request.method == 'POST':
         name = request.POST['name']
-        courses.append({'id': len(courses) + 1, 'name': name})  # Assign a unique ID
+        description = request.POST['description']
+        Course.objects.create(name=name, description=description)
         return redirect('course_list')
     return render(request, 'course/add_course.html')
 
 def update_course(request, id):
-    course = next((c for c in courses if c['id'] == id), None)
-    if not course:
-        return redirect('course_list')
+    course = get_object_or_404(Course, id=id)
 
     if request.method == 'POST':
-        course['name'] = request.POST['name']
+        course.name = request.POST['name']
+        course.description = request.POST['description']
+        course.save()
         return redirect('course_list')
 
     return render(request, 'course/update_course.html', {'course': course})
 
 def delete_course(request, id):
-    global courses
-    courses = [c for c in courses if c['id'] != id]
+    course = get_object_or_404(Course, id=id)
+    course.delete()
     return redirect('course_list')

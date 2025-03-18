@@ -2,7 +2,7 @@
 {% block content %}
 <h2>Course List</h2>
 <a href="{% url 'add_course' %}">Add Course</a>
-<table>
+<table border="1">
     <tr><th>ID</th><th>Name</th><th>Description</th><th>Actions</th></tr>
     {% for course in courses %}
     <tr>

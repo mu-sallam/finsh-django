@@ -3,13 +3,24 @@ from .models import Trainee
 from course_app.models import Course
 from .forms import  AddTraineeForm
 from django.views import View
+from django.views.generic import ListView
+from django.views.generic.edit import DeleteView
+from django.urls import reverse_lazy
 
 
 courses = Course.objects.all()
+class TraineeListView(ListView):
+    model = Trainee
+    template_name = 'trainee/trainee_list.html'
+    context_object_name = 'trainees'
 
-def trainee_list(request):
-    trainees = Trainee.objects.all()
-    return render(request, 'trainee/trainee_list.html', {'trainees': trainees})
+class TraineeDeleteView(DeleteView):
+    model = Trainee
+    template_name = 'trainee/trainee_confirm_delete.html'
+    success_url = reverse_lazy('trainee_list')
+    
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
 
 class AddTraineeView(View):
     template_name = 'trainee/add_trainee.html'
@@ -48,7 +59,3 @@ class UpdateTraineeView(View):
         trainee.save()
         return redirect('trainee_list')
 
-def delete_trainee(request, id):
-    trainee = get_object_or_404(Trainee, id=id)
-    trainee.delete()
-    return redirect('trainee_list')

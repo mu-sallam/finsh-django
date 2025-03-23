@@ -33,9 +33,11 @@ class AddTraineeView(View):
         form = AddTraineeForm(request.POST)
         if form.is_valid():
             Trainee.objects.create(
-                name=form.cleaned_data['name'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
                 age=form.cleaned_data['age'],
                 email=form.cleaned_data['email'],
+                phone=form.cleaned_data['phone'],
                 course=Course.objects.get(id=form.cleaned_data['course'])
             )
             return redirect('trainee_list')
@@ -52,9 +54,11 @@ class UpdateTraineeView(View):
     
     def post(self, request, id):
         trainee = get_object_or_404(Trainee, id=id)
-        trainee.name = request.POST['name']
+        trainee.first_name = request.POST['first_name']
+        trainee.last_name = request.POST['last_name']
         trainee.age = request.POST['age']
         trainee.email = request.POST['email']
+        trainee.phone = request.POST['phone']
         trainee.course = Course.objects.get(id=request.POST['course'])
         trainee.save()
         return redirect('trainee_list')

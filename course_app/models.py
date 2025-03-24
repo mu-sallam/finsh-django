@@ -7,3 +7,6 @@ class Course(models.Model):
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=300)
 
+    @classmethod
+    def get_all_courses(cls):
+        return cls.objects.all()
